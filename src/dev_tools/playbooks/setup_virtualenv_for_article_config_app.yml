@@ -1,0 +1,22 @@
+- hosts: localhost
+  connection: local
+  vars:
+    virtualenv_name: 'article_config_app_venv'
+    virtualenv_path_to_requirements: /mnt/d/freedom/ArticleConfigApp/src/article_config_app/requirements.txt
+  tasks:
+  - name: Remove virtualenv
+    file:
+      path: "/home/st/virtualenvs/{{ virtualenv_name }}"
+      state: absent
+  - name: Install virtualenv using pip
+    pip:
+      name: virtualenv
+#  - name: Manually create the initial virtualenv
+#    command:
+#      cmd: virtualenv /home/st/virtualenvs/sql_alchemy_venv/ -p python3.8
+#      creates: "/home/st/virtualenvs/sql_alchemy_venv/"
+  - name: Create venv and install requirements
+    pip:
+      virtualenv: "/home/st/virtualenvs/{{ virtualenv_name }}"
+      virtualenv_python: python3.8
+      requirements: "{{ virtualenv_path_to_requirements }}"
